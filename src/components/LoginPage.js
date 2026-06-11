@@ -19,52 +19,58 @@ function LoginPage() {
   };
 
   return (
-    <div className="login-container">
-      <div className="welcome-section">
-        <h2>Welcome to React OIDC App</h2>
-        <p style={{ marginBottom: '30px', fontSize: '18px', color: '#555' }}>
-          Secure authentication using Authorization Code + PKCE flow
+    <div className="login-wrapper">
+      <div className="login-card">
+        <div className="login-logo">
+          🔐
+        </div>
+        
+        <h2 className="login-title">IdentityHub Portal</h2>
+        <p className="login-subtitle">
+          Secure, single sign-on access to your Contact Management dashboard using authorization code with PKCE.
         </p>
 
         {loginError && (
-          <div style={{ 
-            marginBottom: '20px', 
-            padding: '15px', 
-            backgroundColor: '#f8d7da', 
-            color: '#721c24', 
-            borderRadius: '5px',
-            border: '1px solid #f5c6cb'
-          }}>
-            <strong>Login Error:</strong> {loginError}
-            <p style={{ fontSize: '14px', marginTop: '10px' }}>
-              Please try again or contact support if the problem persists.
-            </p>
+          <div className="alert-message alert-error" style={{ marginBottom: '2rem', textAlign: 'left' }}>
+            <span style={{ fontSize: '1.2rem' }}>⚠️</span>
+            <div>
+              <strong>Login Error:</strong> {loginError}
+              <div style={{ fontSize: '0.8rem', marginTop: '0.25rem', opacity: 0.8 }}>
+                Please try again or contact support if the problem persists.
+              </div>
+            </div>
           </div>
         )}
 
         <button 
-          className="btn btn-primary" 
+          className="contact-btn btn-primary" 
           onClick={handleLogin}
           disabled={isLoading}
           style={{ 
-            fontSize: '18px', 
-            padding: '15px 40px',
-            opacity: isLoading ? 0.6 : 1,
+            fontSize: '1rem', 
+            padding: '0.8rem 2.5rem',
+            width: '100%',
+            height: '52px',
+            opacity: isLoading ? 0.7 : 1,
             cursor: isLoading ? 'not-allowed' : 'pointer'
           }}
         >
-          {isLoading ? 'Redirecting...' : 'Login with IdentityHub'}
+          {isLoading ? 'Redirecting to IdentityHub...' : 'Login with IdentityHub'}
         </button>
-      </div>
 
-      <div className="user-info" style={{ marginTop: '40px' }}>
-        <h3>Security Features</h3>
-        <ul style={{ textAlign: 'left', lineHeight: '2', fontSize: '16px' }}>
-          <li>✓ Authorization Code + PKCE Flow</li>
-          <li>✓ Automatic Silent Token Renewal</li>
-          <li>✓ Secure Session Management</li>
-          <li>✓ Protected Token Storage</li>
-          <li>✓ Industry-Standard Security</li>
+        <ul className="security-list">
+          <li className="security-item">
+            <span className="security-icon">✓</span> Authorization Code + PKCE Flow
+          </li>
+          <li className="security-item">
+            <span className="security-icon">✓</span> Automatic Silent Token Renewal
+          </li>
+          <li className="security-item">
+            <span className="security-icon">✓</span> Secure Session Management
+          </li>
+          <li className="security-item">
+            <span className="security-icon">✓</span> Protected Token Storage
+          </li>
         </ul>
       </div>
     </div>

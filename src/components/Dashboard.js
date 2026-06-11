@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from 'react-oidc-context';
+import ContactManagement from './ContactManagement';
 
 function Dashboard() {
   const auth = useAuth();
@@ -10,67 +11,80 @@ function Dashboard() {
 
   return (
     <div className="dashboard-wrapper">
-      {/* Hero Section */}
-      <section className="profile-hero">
-        <div className="avatar-large">{initials}</div>
-        <div style={{ flex: 1 }}>
-          <h4 style={{ color: 'var(--accent)', margin: 0, fontSize: '0.9rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Verified Profile</h4>
-          <h1 style={{ fontSize: '3rem', margin: '0.5rem 0' }}>{displayName}</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>{user?.email}</p>
+      {/* Hero Header Section */}
+      <section className="profile-hero" style={{ padding: '2rem 3rem', borderRadius: '24px', marginBottom: '2rem' }}>
+        <div className="avatar-large" style={{ width: '80px', height: '80px', borderRadius: '20px', fontSize: '2rem' }}>
+          {initials}
         </div>
-        <button onClick={() => auth.signoutRedirect()} className="logout-pill">
+        <div style={{ flex: 1 }}>
+          <h4 style={{ color: 'var(--accent)', margin: 0, fontSize: '0.8rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
+            Welcome back
+          </h4>
+          <h1 style={{ fontSize: '2.25rem', margin: '0.25rem 0 0 0', fontWeight: 700 }}>
+            {displayName}
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: '0.25rem 0 0 0' }}>
+            {user?.email}
+          </p>
+        </div>
+        <button onClick={() => auth.signoutRedirect()} className="logout-pill" style={{ padding: '0.6rem 1.5rem', fontSize: '0.9rem' }}>
           Sign Out
         </button>
       </section>
 
-      {/* Stats/Info Grid */}
-      <div className="info-grid">
-        <div className="info-card">
-          <span className="card-label">Identity ID</span>
-          <div className="card-value">{user?.sub}</div>
+      {/* Info Cards Grid (Top Display) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
+        {/* Personal Details Card */}
+        <div className="info-card" style={{ padding: '1.5rem' }}>
+          <h4 style={{ margin: '0 0 1rem 0', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
+            👤 Personal Details
+          </h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.85rem' }}>
+            <div>
+              <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: '0.15rem' }}>First Name</span>
+              <span style={{ fontWeight: 600 }}>{user?.given_name || '—'}</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Last Name</span>
+              <span style={{ fontWeight: 600 }}>{user?.family_name || '—'}</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Preferred Username</span>
+              <span style={{ fontWeight: 600 }}>{user?.preferred_username || '—'}</span>
+            </div>
+          </div>
         </div>
-        <div className="info-card">
-          <span className="card-label">Authentication Method</span>
-          <div className="card-value">OIDC + PKCE</div>
-        </div>
-        <div className="info-card">
-          <span className="card-label">Token Expiry</span>
-          <div className="card-value">{new Date(auth.user?.expires_at * 1000).toLocaleTimeString()}</div>
+
+        {/* Connection Security Card */}
+        <div className="info-card" style={{ padding: '1.5rem' }}>
+          <h4 style={{ margin: '0 0 1rem 0', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
+            🛡️ Session & Token
+          </h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.85rem' }}>
+            <div>
+              <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Session / Identity ID</span>
+              <span style={{ fontFamily: 'monospace', opacity: 0.8, wordBreak: 'break-all', fontSize: '0.8rem' }}>{user?.sub || '—'}</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Authentication Method</span>
+              <span style={{ fontWeight: 600 }}>OIDC + PKCE Flow</span>
+            </div>
+            <div>
+              <span style={{ color: 'var(--text-secondary)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: '0.15rem' }}>Session Token Expiration</span>
+              <span style={{ fontWeight: 600 }}>{new Date(auth.user?.expires_at * 1000).toLocaleTimeString()}</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-        {/* Profile Details Section */}
-        <section className="info-card" style={{ height: 'fit-content' }}>
-          <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ color: 'var(--primary)' }}>●</span> Profile Information
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {Object.entries(user || {}).map(([key, value]) => (
-              ['name', 'email', 'preferred_username', 'given_name', 'family_name'].includes(key) && (
-                <div key={key} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
-                  <span style={{ color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{key.replace('_', ' ')}</span>
-                  <span>{String(value)}</span>
-                </div>
-              )
-            ))}
-          </div>
-        </section>
-
-        {/* Identity Hub Raw Data */}
-        <section>
-          <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>Identity Hub Metadata</h3>
-          <div className="code-box">
-            <pre style={{ margin: 0 }}>
-              {JSON.stringify(user, null, 2)}
-            </pre>
-          </div>
-        </section>
-      </div>
+      {/* Main Workspace: Contact Management */}
+      <main>
+        <ContactManagement />
+      </main>
 
       {/* Footer Branding */}
-      <footer style={{ marginTop: '4rem', textAlign: 'center', padding: '2rem', borderTop: '1px solid var(--glass-border)' }}>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
+      <footer style={{ marginTop: '5rem', borderTop: '1px solid var(--glass-border)', paddingTop: '2.5rem', paddingBottom: '3rem' }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textAlign: 'center', margin: 0 }}>
           Securely connected to <strong>Operlity IdentityHub</strong>
         </p>
       </footer>

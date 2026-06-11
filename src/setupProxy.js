@@ -4,14 +4,16 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 // Remove this file once CORS is properly configured on Identity Hub
 
 module.exports = function(app) {
+  const target = process.env.REACT_APP_BASE_URL || process.env.REACT_APP_AUTHORITY || 'https://ogsiamapp.azurewebsites.net';
   console.log('🔧 Proxy middleware active - routing /idp to Identity Hub');
   console.log('⚠️  This is a development workaround only!');
   console.log('📝 Proper fix: Configure CORS on Identity Hub');
+  console.log('🎯 Proxy target:', target);
 
   app.use(
     '/idp',
     createProxyMiddleware({
-      target: 'https://id.demo.operlity.com',
+      target,
       changeOrigin: true,
       secure: false, // Allow self-signed certificates in development
       pathRewrite: {
