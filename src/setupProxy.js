@@ -4,7 +4,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 // Remove this file once CORS is properly configured on Identity Hub
 
 module.exports = function(app) {
-  const target = process.env.REACT_APP_BASE_URL || process.env.REACT_APP_AUTHORITY || 'https://ogsiamapp.azurewebsites.net';
+  const target = process.env.REACT_APP_BASE_URL || process.env.REACT_APP_AUTHORITY || 'https://your-identityhub-authority.com';
   console.log('🔧 Proxy middleware active - routing /idp to Identity Hub');
   console.log('⚠️  This is a development workaround only!');
   console.log('📝 Proper fix: Configure CORS on Identity Hub');

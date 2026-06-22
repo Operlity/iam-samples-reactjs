@@ -11,6 +11,7 @@ function ContactManagement() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState(null);
 
   const isEditing = useMemo(() => editingId !== null, [editingId]);
 
@@ -107,18 +108,22 @@ function ContactManagement() {
     setSuccess('');
   };
 
-  const onDelete = async (id) => {
+  const onDelete = (id) => {
     setError('');
     setSuccess('');
-    if (!window.confirm('Are you sure you want to delete this contact?')) {
-      return;
-    }
+    setDeleteId(id);
+  };
+
+  const confirmDelete = async () => {
+    if (deleteId === null) return;
     try {
-      await contactDb.deleteContact(id);
+      await contactDb.deleteContact(deleteId);
       setSuccess('Contact deleted successfully!');
       await loadContacts();
     } catch (e) {
       setError('Failed to delete contact.');
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -256,6 +261,35 @@ function ContactManagement() {
           </div>
         )}
       </div>
+
+      {/* Custom Delete Confirmation Modal */}
+      {deleteId !== null && (
+        <div className="modal-overlay" onClick={() => setDeleteId(null)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-icon">⚠️</div>
+            <h3 className="modal-title">Delete Contact</h3>
+            <p className="modal-text">
+              Are you sure you want to delete this contact? This action cannot be undone.
+            </p>
+            <div className="modal-actions">
+              <button 
+                type="button" 
+                className="contact-btn btn-secondary" 
+                onClick={() => setDeleteId(null)}
+              >
+                Cancel
+              </button>
+              <button 
+                type="button" 
+                className="contact-btn btn-danger" 
+                onClick={confirmDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

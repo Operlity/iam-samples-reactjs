@@ -2,7 +2,7 @@ import { WebStorageStateStore } from 'oidc-client-ts';
 
 // Use the local proxy prefix for ALL OIDC endpoints to bypass CORS
 const proxyBase = window.location.origin + '/idp';
-const authority = process.env.REACT_APP_AUTHORITY || process.env.REACT_APP_BASE_URL || 'https://ogsiamapp.azurewebsites.net';
+const authority = process.env.REACT_APP_AUTHORITY || process.env.REACT_APP_BASE_URL || 'https://your-identityhub-authority.com';
 
 export const oidcConfig = {
   authority,
